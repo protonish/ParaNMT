@@ -7,6 +7,7 @@ import json
 import re
 from collections import defaultdict as DefaultDict
 import sys
+import utils
 
 
 def index_lookup(elements):
@@ -17,15 +18,15 @@ def index_lookup(elements):
 
 
 def get_distribution(filename):
-    cachedStopWords = stopwords.words("english")
+    cached_stop_words = stopwords.words("english")
     text_matrix = []
     text_set_stop = []
     corpus = ""
     for line in open(filename):
         line = unicode(line, 'utf8')
-        #text_matrix_inner = word_tokenize(line, language='english')
-        text_matrix_inner = line.split()        
-        stop_removed = ' '.join([word for word in line.split() if word not in cachedStopWords])
+        # text_matrix_inner = word_tokenize(line, language='english')
+        text_matrix_inner = line.split()
+        stop_removed = ' '.join([word for word in line.split() if word not in cached_stop_words])
         corpus += stop_removed
         stop_removed = word_tokenize(stop_removed, language='english')
         text_set_stop.append(stop_removed)
@@ -64,9 +65,11 @@ def match_index(freq_dist, text_matrix):
 
 
 if __name__ == "__main__":
-    input_file = "data/newstest2011.en"
-    whole_text, local_corpus = get_distribution(input_file)
+    # input_file = "data/newstest2011.en"
+    json_filepath = 'sentences_subwords.json'
+    # whole_text, local_corpus = get_distribution(input_file)
     # print text_matrix
+    local_corpus = utils.build_text_matrix('t', json_filepath)
 
     word_freq = nltk.FreqDist(itertools.chain(*local_corpus))
     print word_freq
@@ -86,14 +89,14 @@ if __name__ == "__main__":
 
     print count, " relevant words found!"
 
-    #json_ready = json.dumps(freq_dict, sort_keys=True, ensure_ascii=False)
-    freq_file = open('data/freq_dist_test.json', 'w')
-    #json.dump(json_ready, freq_file, encoding='utf8')
+    # json_ready = json.dumps(freq_dict, sort_keys=True, ensure_ascii=False)
+    freq_file = open('data/freq_dist_test1.json', 'w')
+    # json.dump(json_ready, freq_file, encoding='utf8')
     json.dump(freq_dict, freq_file, sort_keys=True, encoding='utf8')
     print "Frequency Distribution saved in file."
 
-    indices_dict = match_index(freq_dict, whole_text)
-    #json_ready = json.dumps(indices_dict, sort_keys=True, ensure_ascii=False)
-    index_file = open('data/index_file.json', 'w')
+    indices_dict = match_index(freq_dict, local_corpus)
+    # json_ready = json.dumps(indices_dict, sort_keys=True, ensure_ascii=False)
+    index_file = open('data/index_file1.json', 'w')
     json.dump(indices_dict, index_file, sort_keys=True, encoding='utf8')
     print "\nWord-Index pairs saved in file."
