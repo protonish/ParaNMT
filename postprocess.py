@@ -23,7 +23,8 @@ def get_distribution(filename):
     corpus = ""
     for line in open(filename):
         line = unicode(line, 'utf8')
-        text_matrix_inner = word_tokenize(line, language='english')
+        #text_matrix_inner = word_tokenize(line, language='english')
+        text_matrix_inner = line.split()        
         stop_removed = ' '.join([word for word in line.split() if word not in cachedStopWords])
         corpus += stop_removed
         stop_removed = word_tokenize(stop_removed, language='english')
@@ -40,7 +41,7 @@ def match_index(freq_dist, text_matrix):
 
     for key in freq_dist.keys():
         sys.stderr.write(".")
-        if key_count % 50 == 0:
+        if key_count % 150 == 0:
             sys.stderr.write("\n")
         _iterator = 0
         count = 0
