@@ -85,13 +85,14 @@ if __name__ == "__main__":
 
     print count, " relevant words found!"
 
-    json_ready = json.dumps(freq_dict, sort_keys=True, ensure_ascii=False)
-    freq_file = open('data/freq_dist.json', 'w')
-    json.dump(json_ready, freq_file, encoding='utf8')
+    #json_ready = json.dumps(freq_dict, sort_keys=True, ensure_ascii=False)
+    freq_file = open('data/freq_dist_test.json', 'w')
+    #json.dump(json_ready, freq_file, encoding='utf8')
+    json.dump(freq_dict, freq_file, sort_keys=True, encoding='utf8')
     print "Frequency Distribution saved in file."
 
     indices_dict = match_index(freq_dict, whole_text)
-    json_ready = json.dumps(indices_dict, sort_keys=True, ensure_ascii=False)
+    #json_ready = json.dumps(indices_dict, sort_keys=True, ensure_ascii=False)
     index_file = open('data/index_file.json', 'w')
-    json.dump(json_ready, index_file, encoding='utf8')
+    json.dump(indices_dict, index_file, sort_keys=True, encoding='utf8')
     print "\nWord-Index pairs saved in file."
